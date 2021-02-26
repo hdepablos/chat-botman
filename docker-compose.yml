@@ -1,0 +1,26 @@
+version: "3"
+services:
+  dev-botman:
+    build: ./tools/docker
+    container_name: botman
+    hostname: botman.vm
+    external_links:
+      - databases:mysql
+
+    environment:
+      - VIRTUAL_HOST=botman.vm
+
+    volumes:
+      - ./tools/docker/bash_aliases:/home/developer/.bash_aliases
+      - .:/var/www
+    networks:
+      default:
+        aliases:
+          - botman.vm
+    expose:
+      - "80"
+      - "443"
+networks:
+  default:
+    external:
+      name: nginx-proxy
